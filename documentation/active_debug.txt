@@ -1,0 +1,12 @@
+Instal debug in vscode
+    - in php.init you need write the following:
+    *(ctr+b - search, ctr+g - save)
+        ;Xdebug
+        zend_extension="{$path}\php-7.1\lib\php_xdebug.dll"
+        xdebug.remote_enable = 1
+        xdebug.remote_autostart = 1
+    
+    - restard apache
+
+    - Go to vscode->extension and install php debug -> reload 
+    - Ready! you can debug your code.

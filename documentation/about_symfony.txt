@@ -1,0 +1,10 @@
+
+
+- Active app_dev.php:
+	you need write app_dev.php before /web/ in you url
+
+- Assitic files:
+    php app/console assets:install
+    php bin/console assetic:dump --env=prod
+    php bin/console assetic:dump --env=dev
+    https://symfony.com/doc/3.4/frontend/assetic/asset_management.html
