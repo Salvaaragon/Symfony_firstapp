@@ -1,0 +1,3 @@
+bio:
+    path: /bio
+    defaults: { _controller: AppBundle:Main:index }
