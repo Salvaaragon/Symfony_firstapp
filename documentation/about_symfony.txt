@@ -8,3 +8,20 @@
     php bin/console assetic:dump --env=prod
     php bin/console assetic:dump --env=dev
     https://symfony.com/doc/3.4/frontend/assetic/asset_management.html
+
+
+- Install asset files and sass
+    1º add in config.yml file, in framwork:
+        # ...
+        templating:
+            engines: ['twig']
+    2º composer require symfony/assetic-bundle
+        https://symfony.com/doc/3.4/frontend/assetic/asset_management.html
+    3º update composer: composer update
+    3º instal library to sass:
+        composer require leafo/scssphp
+        composer require patchwork/jsqueeze 
+    4º create a folder asset/:
+        composer require symfony/webpack-encore-pack
+        yarn install
+    https://symfony.com/doc/3.4/frontend/encore/bootstrap.html
