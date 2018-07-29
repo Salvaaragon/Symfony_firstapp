@@ -1,0 +1,26 @@
+/*
+    main-color: #1E2224
+    text-color1: #F8FFFF
+    text-color2: #424242
+    second-color: #1A95D5
+    support-color: #494949
+*/
+
+#footer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 0.4rem;
+    background-color: #1E2224;
+    text-align: center;
+  }
+
+.text_color {
+    color: #1A95D5;
+    font-size: 14px;
+}
+
+.no-margin {
+    margin: 0px !important;
+}

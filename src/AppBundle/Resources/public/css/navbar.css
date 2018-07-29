@@ -1,0 +1,15 @@
+.navbar_content {
+    background-color: #1E2224 !important;
+}
+
+.text_link {
+    color: #F8FFFF !important;
+}
+
+.text_link:hover {
+    color: #1A95D5 !important;
+}
+
+.text_link:active {
+    color: #1A95D5 !important;
+}
