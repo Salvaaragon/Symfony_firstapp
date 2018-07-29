@@ -18,3 +18,7 @@
 - teclas rapidas
     ctrl + shift + r : reload without cache
     ctrl + shift + supr : clear browser cache
+
+- Phpmyadmin
+    user: root
+    pass: mysql
