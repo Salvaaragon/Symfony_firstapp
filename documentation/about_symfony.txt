@@ -26,3 +26,19 @@
 - Genetare entities from existing database
     php bin/console doctrine:mapping:import --force AppBundle xml
     php bin/console doctrine:mapping:convert annotation ./src
+
+- Url assets
+    ## assets urls
+
+    {{ asset('bundles/app/img/logo.png') }}
+    {{ asset('bundles/framework/images/logo_symfony.png') }}
+
+    ## controller urls
+
+    {{ url('homepage') }}
+    {{ url('dummy_route') }}
+
+    ## controller paths
+
+    {{ path('homepage') }}
+    {{ path('dummy_route') }}

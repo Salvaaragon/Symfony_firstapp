@@ -28,4 +28,8 @@ class MainController extends Controller
         $form = $this->createForm(ContactType::class, $contact);
         return $this->render('@App/contact.html.twig', array("form"=>$form->createView()));
     }
+
+    public function loginAction() {
+        return $this->render('@App/login.html.twig');
+    }
 }

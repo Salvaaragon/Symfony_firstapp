@@ -9,3 +9,7 @@ bio:
 contact:
     path: /contact
     defaults: { _controller: AppBundle:Main:contact }
+
+login:
+    path: /login
+    defaults: { _controller: AppBundle:Main:login }
