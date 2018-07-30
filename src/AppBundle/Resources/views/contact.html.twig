@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="row no-margin">
+    <div class="col-xs-12">
+        <p> Tell me something about you. </p>
+    </div>
+</div>
+
+{{ form_start(form) }}
+{{ form_widget(form) }}
+{{ form_end(form) }}
+{% endblock %}

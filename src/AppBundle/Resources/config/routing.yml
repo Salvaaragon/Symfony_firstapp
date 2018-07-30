@@ -1,3 +1,7 @@
 bio:
     path: /bio
     defaults: { _controller: AppBundle:Main:index }
+
+contact:
+    path: /contact
+    defaults: { _controller: AppBundle:Main:contact }
