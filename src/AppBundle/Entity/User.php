@@ -42,5 +42,31 @@ class User
      */
     private $id;
 
+    public function getId() {
+        return $this->id;
+    }
 
+    public function getEmail() {
+        return $this->email;
+    }
+
+    public function getPassword() {
+        return $this->password;
+    }
+
+    public function getName() {
+        return $this->name;
+    }
+
+    public function setEmail($image) {
+        $this->image = $image;
+    }
+
+    public function setPassword($password) {
+        $this->password = $password;
+    }
+
+    public function setName($name) {
+        $this->name = $name;
+    }
 }

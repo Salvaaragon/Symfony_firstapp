@@ -1,6 +1,10 @@
+index:
+    path: /
+    defaults: { _controller: AppBundle:Main:index }
+
 bio:
     path: /bio
-    defaults: { _controller: AppBundle:Main:index }
+    defaults: { _controller: AppBundle:Main:aboutUs }
 
 contact:
     path: /contact

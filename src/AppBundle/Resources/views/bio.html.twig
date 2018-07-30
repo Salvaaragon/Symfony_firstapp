@@ -1,9 +1,78 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="row no-margin">
-    <div class="col-xs-12">
-        <p> Tell me something about you. </p>
+
+{% for devp in developers %}
+{% if devp.id % 2 != 0 %}
+<div class="row no-margin row_margin">
+    <div class="col-lg-2 offset-lg-2">
+        <img class="bio_image" src="{{ asset('bundles/app/image/default_bio.png') }}">
+    </div>
+    <div class="col-lg-6">
+        <div class="col-lg-12">
+            <p><b>{{ devp.surname }}, {{ devp.name }}</b></p>
+            <p>
+                {{ devp.personalinformation }}
+            </p>
+        </div>
+        <div class="row row_padding">
+            <div class="col-lg-5 offset-lg-7 miclase" align="right">
+                <a href="{{ devp.linkedin }}"><img class="bio_icon icon_linkedin" src="{{ asset('bundles/app/image/icon_linkedin.png') }}"></a>
+                <a href="{{ devp.twitter }}"><img  class="bio_icon icon_twitter" src="{{ asset('bundles/app/image/icon_twitter.png') }}"></a>
+                <a href="{{ devp.email }}"><img class="bio_icon icon_gmail" src="{{ asset('bundles/app/image/icon_gmail.png') }}"></a>
+        
+            </div>
+        </div>
     </div>
 </div>
+{% else %}
+<div class="row no-margin row_margin">
+    <div class="col-lg-6 offset-lg-2">
+        <div class="col-lg-12">
+            <p><b>{{ devp.surname }}, {{ devp.name }}</b></p>
+            <p>
+                {{ devp.personalinformation }}
+            </p>
+        </div>
+        <div class="row row_padding">
+            <div class="col-lg-5 miclase" align="left">
+                <a href="{{ devp.linkedin }}"><img class="bio_icon icon_linkedin" src="{{ asset('bundles/app/image/icon_linkedin.png') }}"></a>
+                <a href="{{ devp.twitter }}"><img class="bio_icon icon_twitter" src="{{ asset('bundles/app/image/icon_twitter.png') }}"></a>
+                <a href="{{ devp.email }}"><img class="bio_icon icon_gmail" src="{{ asset('bundles/app/image/icon_gmail.png') }}"></a>
+        
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2">
+            <img class="bio_image" src="{{ asset('bundles/app/image/default_bio.png') }}">
+        </div>
+</div>
+{% endif %}
+{% endfor %}
+
 {% endblock %}
+
+{% block javascripts %}
+<script>
+    $( document ).ready(function() {
+        
+        $( ".icon_linkedin" ).mouseenter(function() {
+            $( this ).attr("src", "{{ asset('bundles/app/image/icon_linkedin_hover.png') }}")
+        }).mouseleave(function() {
+            $( this ).attr("src", "{{ asset('bundles/app/image/icon_linkedin.png') }}")
+        });
+
+        $( ".icon_twitter" ).mouseenter(function() {
+            $( this ).attr("src", "{{ asset('bundles/app/image/icon_twitter_hover.png') }}")
+        }).mouseleave(function() {
+            $( this ).attr("src", "{{ asset('bundles/app/image/icon_twitter.png') }}")
+        });
+
+        $( ".icon_gmail" ).mouseenter(function() {
+            $( this ).attr("src", "{{ asset('bundles/app/image/icon_gmail_hover.png') }}")
+        }).mouseleave(function() {
+            $( this ).attr("src", "{{ asset('bundles/app/image/icon_gmail.png') }}")
+        });
+    });
+</script>
+{% endblock %} 

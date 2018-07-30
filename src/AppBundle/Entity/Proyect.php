@@ -42,5 +42,31 @@ class Proyect
      */
     private $id;
 
+    public function getId() {
+        return $this->id;
+    }
 
+    public function getImage() {
+        return $this->image;
+    }
+
+    public function getDescription() {
+        return $this->description;
+    }
+
+    public function getUrl() {
+        return $this->url;
+    }
+
+    public function setImage($image) {
+        $this->image = $image;
+    }
+
+    public function setDescription($description) {
+        $this->description = $description;
+    }
+
+    public function setUrl($url) {
+        $this->url = $url;
+    }
 }
