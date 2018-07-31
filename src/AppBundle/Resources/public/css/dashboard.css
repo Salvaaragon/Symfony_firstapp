@@ -1,0 +1,79 @@
+.dashboard_title {
+    margin-top: 10px;
+    text-align: center;
+    margin-bottom: 70px;
+}
+
+.dashboard_block_card {
+    text-align:center;
+}
+
+.card_image_projects_dashboard {
+    width:170px;
+    height: 110px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:25px;
+}
+
+.card_image_profiles_dashboard {
+    width:130px;
+    height: 120px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:15px;
+}
+
+.card_image_emails_dashboard {
+    width:140px;
+    height: 120px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:15px;
+}
+
+.card_dashboard {
+    width: 22rem;
+}
+
+.card_text_dashboard {
+    text-align: center;
+}
+
+.btn_card_projects_dashboard {
+    background-color: #86328c;
+    border-color:#86328c;
+}
+
+.btn_card_projects_dashboard:hover {
+    background-color: #501b54;
+    border-color:#501b54;
+}
+
+.btn_card_profiles_dashboard {
+    background-color: #3263a0;
+    border-color: #3263a0;
+}
+
+.btn_card_profiles_dashboard:hover {
+    background-color: #234a7a;
+    border-color: #234a7a;
+}
+
+
+.btn_card_emails_dashboard {
+    background-color: #e6594c;
+    border-color:#e6594c;
+}
+
+.btn_card_emails_dashboard:hover {
+    background-color: #a13b32;
+    border-color:#a13b32;
+}
+
+
+.block {
+    display:inline-block;
+    margin: 10px;
+    float: none;
+}

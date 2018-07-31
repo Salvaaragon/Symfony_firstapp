@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class = "dashboard_title"><legend><b>Panel de administración</b></legend></div>
+<div class="no-margin dashboard_block_card">
+    <div class="card card_dashboard block">
+        <img class="card-img-top card_image_projects_dashboard" src="{{ asset('bundles/app/image/card_project_list.png') }}" alt="Card image cap">
+        <div class="card-body">
+            <p>Tiene {{projects}} proyectos listados</p>
+            <a href="#" class="btn btn-primary btn_card_projects_dashboard btn-block">Administrar proyectos</a>
+        </div>
+    </div>
+    <div class="card card_dashboard block">
+        <img class="card-img-top card_image_profiles_dashboard" src="{{ asset('bundles/app/image/card_profile_list.png') }}" alt="Card image cap">
+        <div class="card-body">
+            <p>Tiene {{profiles}} perfiles almacenados</p>
+            <a href="#" class="btn btn-primary btn_card_profiles_dashboard btn-block">Administrar perfiles</a>
+        </div>
+    </div>
+    <div class="card card_dashboard block">
+        <img class="card-img-top card_image_emails_dashboard" src="{{ asset('bundles/app/image/email_img.png') }}" alt="Card image cap">
+        <div class="card-body">
+            <p>Tiene {{emails}} mensajes sin leer</p>
+            <a href="#" class="btn btn-primary btn_card_emails_dashboard btn-block">Bandeja de entrada</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

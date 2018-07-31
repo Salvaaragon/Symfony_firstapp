@@ -52,10 +52,10 @@ CREATE TABLE IF NOT EXISTS `Developer` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `Proyect`
+-- Estructura de tabla para la tabla `Project`
 --
 
-CREATE TABLE IF NOT EXISTS `Proyect` (
+CREATE TABLE IF NOT EXISTS `Project` (
   `id` int(11) NOT NULL,
   `description` varchar(100) NOT NULL,
   `url` varchar(100) DEFAULT NULL,
@@ -92,9 +92,9 @@ ALTER TABLE `Developer`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `Proyect`
+-- Indices de la tabla `Project`
 --
-ALTER TABLE `Proyect`
+ALTER TABLE `Project`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -118,9 +118,9 @@ ALTER TABLE `Contact`
 ALTER TABLE `Developer`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT de la tabla `Proyect`
+-- AUTO_INCREMENT de la tabla `Project`
 --
-ALTER TABLE `Proyect`
+ALTER TABLE `Project`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `User`

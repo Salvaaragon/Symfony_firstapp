@@ -13,3 +13,7 @@ contact:
 login:
     path: /login
     defaults: { _controller: AppBundle:Main:login }
+
+admin:
+    path: /admin
+    defaults: { _controller: AppBundle:Main:admin }

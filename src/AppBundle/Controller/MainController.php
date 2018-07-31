@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use AppBundle\Form\ContactType;
 use AppBundle\Entity\Contact;
 use AppBundle\Entity\Developer;
+use AppBundle\Entity\Project;
 
 class MainController extends Controller 
 {
@@ -68,5 +69,20 @@ class MainController extends Controller
 
     public function loginAction() {
         return $this->render('@App/login.html.twig');
+    }
+
+    public function adminAction() {
+        $project_repository = $this->getDoctrine()->getRepository(Project::class);
+        $developer_repository = $this->getDoctrine()->getRepository(Developer::class);
+        $email_repository = $this->getDoctrine()->getRepository(Contact::class);
+
+        $total_projects = sizeof($project_repository->findAll());
+        $total_profiles = sizeof($developer_repository->findAll());
+        $total_emails = sizeof($email_repository->findAll());
+
+        return $this->render('@App/dashboard.html.twig', 
+            array("projects" => $total_projects, 
+                  "profiles" => $total_profiles, 
+                  "emails" => $total_emails));
     }
 }

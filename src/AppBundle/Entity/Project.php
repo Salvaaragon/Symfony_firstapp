@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Proyect
+ * Project
  *
- * @ORM\Table(name="Proyect")
+ * @ORM\Table(name="Project")
  * @ORM\Entity
  */
-class Proyect
+class Project
 {
     /**
      * @var string
