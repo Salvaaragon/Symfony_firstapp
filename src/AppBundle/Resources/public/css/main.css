@@ -39,3 +39,12 @@
 .index_image {
     width: 100%;
 }
+
+.margin_top {
+    margin-top: 40px !important;
+}
+
+.color_text_link {
+    color: #0b0080;
+    font-size: 18px;
+}
