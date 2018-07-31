@@ -14,3 +14,9 @@
 .text_link:active {
     color: #1A95D5 !important;
 }
+
+.nav_bar_div {
+    width: 100%;
+    position: fixed;
+    z-index: 2;
+}
