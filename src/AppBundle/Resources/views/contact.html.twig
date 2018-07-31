@@ -2,7 +2,24 @@
 
 {% block body %}
 <div>
-    <div class = "contact_title"><legend><b>Contacto</b></legend></div>
+    <div class = "contact_title"><legend><b>Contáctanos</b></legend></div>
+    <p class = "contact_desc">Si tienes alguna sugerencia, consulta o simplemente quieres comunicarnos cualquier cosa no 
+            dudes en hacérnoslo saber. 
+            <br>
+            ¡Te responderemos en la mayor brevedad posible!</p>
+
+            {% for flashMessage in app.session.flashbag.get('success_send') %}
+            <div class="alert alert-success col-md-8 offset-md-2 text-center">
+                {{ flashMessage }}
+            </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('error_send') %}
+            <div class="alert alert-danger col-md-6 offset-md-3 text-center">
+                {{ flashMessage }}
+            </div>
+            {% endfor %}
+
+            {{ form_start(form) }}
         {{ form_start(form) }}
     <div class="row no-margin">
     <div class="col-md-6"><img class="contact_img", src="{{ asset('bundles/app/image/email_img.png') }}"></div>
@@ -11,4 +28,5 @@
     </div></div>
         {{ form_end(form) }}
 </div>
+<div class="contact_space"></div>
 {% endblock %}

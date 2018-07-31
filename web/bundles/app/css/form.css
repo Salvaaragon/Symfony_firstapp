@@ -1,19 +1,26 @@
 .contact_title {
-    margin-left: 50px;
     margin-top: 10px;
     text-align: center;
 }
 
+.contact_desc {
+    text-align: center;
+}
+
+.contact_alert {
+    float:center;
+}
+
 .contact_img {
     margin-left: 250px;
-    margin-top: 70px;
+    margin-top: 50px;
     width: 340px;
     height: 280px;
-    align:left;
+    align-content:left;
 }
 
 .contact_form {
-    margin-top: 50px;
+    margin-top: 30px;
 }
 
 
@@ -27,6 +34,7 @@
     background-color: #e6594c;
     border-color:#e6594c;
     float: right;
+    margin-bottom: 50px;
 }
 
 .contact_btn:hover {
