@@ -17,3 +17,7 @@ login:
 admin:
     path: /admin
     defaults: { _controller: AppBundle:Main:admin }
+
+inbox:
+    path: /admin/inbox
+    defaults: { _controller: AppBundle:Main:inbox }

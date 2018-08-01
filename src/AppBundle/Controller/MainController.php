@@ -40,6 +40,9 @@ class MainController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $contact->setEmail($form->get("email")->getData());
                 $contact->setMessage($form->get("message")->getData());
+                $contact->setIsReaded(false);
+                $date = date('Y-m-d H:i:s');
+                $contact->setDate($date);
                 $em->persist($contact);
                 $flush = $em->flush();
                 if($flush == null) {
@@ -80,9 +83,13 @@ class MainController extends Controller
         $total_profiles = sizeof($developer_repository->findAll());
         $total_emails = sizeof($email_repository->findAll());
 
+        $date = date('Y-m-d H:i:s');
+
         return $this->render('@App/dashboard.html.twig', 
             array("projects" => $total_projects, 
                   "profiles" => $total_profiles, 
-                  "emails" => $total_emails));
+                  "emails" => $total_emails,
+                  "date" => $date
+                ));
     }
 }

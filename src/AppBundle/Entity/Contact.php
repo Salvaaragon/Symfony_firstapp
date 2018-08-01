@@ -39,6 +39,20 @@ class Contact
      */
     private $id;
 
+    /**
+     * @var bool
+     * @ORM\Column(name="isReaded", type="boolean", nullable=false)
+     */
+    private $isReaded;
+
+    
+    /**
+     * @var date
+     *
+     * @ORM\Column(name="date", type="datetime", nullable=false)
+     */
+    private $date;
+
     public function getId() {
         return $this->id;
     }
@@ -51,12 +65,28 @@ class Contact
         return $this->message;
     }
 
+    public function getIsReaded() {
+        return $this->isReaded;
+    }
+
+    public function getDate() {
+        return $this->date;
+    }
+
     public function setEmail($email) {
         $this->email = $email;
     }
 
     public function setMessage($message) {
         $this->message = $message;
+    }
+
+    public function setIsReaded($isReaded) {
+        $this->isReaded = $isReaded;
+    }
+
+    public function setDate($date) {
+        $this->date = $date;
     }
 
 }
