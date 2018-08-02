@@ -57,9 +57,9 @@ class Developer
     /**
      * @var string|null
      *
-     * @ORM\Column(name="email", type="string", length=100, nullable=true)
+     * @ORM\Column(name="github", type="string", length=100, nullable=true)
      */
-    private $email;
+    private $github;
 
     /**
      * @var int
@@ -69,7 +69,7 @@ class Developer
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-    
+
     /**
      * Get id
      *
@@ -78,7 +78,7 @@ class Developer
     public function getId() {
         return $this->id;
     }
-
+    
     /**
      * Get image
      *
@@ -134,12 +134,12 @@ class Developer
     }
     
     /**
-     * Get email
+     * Get github
      *
      * @return string
      */
-    public function getEmail() {
-        return $this->email;
+    public function getGithub() {
+        return $this->github;
     }
 
     /**
@@ -154,7 +154,7 @@ class Developer
 
         return $this;
     }
-
+    
     /**
      * Set name
      *
@@ -193,8 +193,8 @@ class Developer
         $this->twitter = $twitter;
     }
 
-    public function setEmail($email) {
-        $this->email = $email;
+    public function setGithub($github) {
+        $this->github = $github;
     }
 
 }

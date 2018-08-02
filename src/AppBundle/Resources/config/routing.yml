@@ -12,7 +12,7 @@ contact:
 
 login:
     path: /login
-    defaults: { _controller: AppBundle:Main:login }
+    defaults: { _controller: AppBundle:User:login }
 
 admin:
     path: /admin
@@ -21,3 +21,7 @@ admin:
 inbox:
     path: /admin/inbox
     defaults: { _controller: AppBundle:Main:inbox }
+
+register:
+    path: /register
+    defaults: { _controller: AppBundle:User:register }

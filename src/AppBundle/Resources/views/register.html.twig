@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="row no-margin">
+    <div class="col-lg-4 offset-lg-4">
+        <h3 class="title_form"> Registrase </h3>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

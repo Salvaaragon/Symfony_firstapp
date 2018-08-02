@@ -34,7 +34,7 @@
         <option name="fixed"/>
       </options>
     </field>
-    <field name="email" type="string" column="email" length="100" nullable="true">
+    <field name="github" type="string" column="github" length="100" nullable="true">
       <options>
         <option name="fixed"/>
       </options>

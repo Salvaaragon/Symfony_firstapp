@@ -42,3 +42,17 @@
 
     {{ path('homepage') }}
     {{ path('dummy_route') }}
+
+
+- create database
+    php bin/console doctrine:database:create
+
+- git reset local changed
+    git reset
+    git clean -f
+    git clean -fd
+
+https://stackoverflow.com/questions/4308610/how-to-ignore-certain-files-in-git
+
+- To do something change in bd
+    php bin/console doctrine:schema:update --force

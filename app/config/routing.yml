@@ -2,3 +2,6 @@ app_bundle:
     # loads routes from the given routing file stored in some bundle
     resource: '@AppBundle/Resources/config/routing.yml'
     prefix:   /
+
+logout:
+    path: /logout

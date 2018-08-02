@@ -65,7 +65,7 @@ class Project
     public function setDescription($description) {
         $this->description = $description;
     }
-
+    
     public function setUrl($url) {
         $this->url = $url;
     }

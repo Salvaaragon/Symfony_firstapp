@@ -14,7 +14,7 @@
         <option name="fixed"/>
       </options>
     </field>
-    <field name="isRead" type="boolean" column="isRead" nullable="false"/>
+    <field name="isread" type="boolean" column="isRead" nullable="false"/>
     <field name="date" type="datetime" column="date" nullable="false">
       <options>
         <option name="default">CURRENT_TIMESTAMP</option>

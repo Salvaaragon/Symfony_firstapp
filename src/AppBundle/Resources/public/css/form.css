@@ -37,3 +37,15 @@
     border-color:#a13b32;
     float: right;
 }
+
+.title_form {
+    text-align: center;
+    padding-bottom: 30px;
+}
+
+.btn_register {
+    float: right;
+    margin-top: 30px;
+    padding-left: 50px;
+    padding-right: 50px;
+}

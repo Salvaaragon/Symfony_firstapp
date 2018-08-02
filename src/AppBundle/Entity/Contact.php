@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Contact
@@ -15,10 +14,7 @@ class Contact
 {
     /**
      * @var string
-     * @Assert\Email(
-     *     message = "El correo electrónico '{{ value }}' no es válido.",
-     *     checkMX = true
-     * )
+     *
      * @ORM\Column(name="email", type="string", length=100, nullable=false)
      */
     private $email;
@@ -31,6 +27,20 @@ class Contact
     private $message;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="isRead", type="boolean", nullable=false)
+     */
+    private $isread;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
+     */
+    private $date = 'CURRENT_TIMESTAMP';
+
+    /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
@@ -38,20 +48,6 @@ class Contact
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
-    /**
-     * @var bool
-     * @ORM\Column(name="isRead", type="boolean", nullable=false)
-     */
-    private $isRead;
-
-    
-    /**
-     * @var date
-     *
-     * @ORM\Column(name="date", type="datetime", nullable=false)
-     */
-    private $date;
 
     public function getId() {
         return $this->id;
@@ -88,5 +84,5 @@ class Contact
     public function setDate($date) {
         $this->date = $date;
     }
-
+    
 }

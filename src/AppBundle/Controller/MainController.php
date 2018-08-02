@@ -70,10 +70,6 @@ class MainController extends Controller
         return $this->render('@App/contact.html.twig', array("form"=>$form->createView()));
     }
 
-    public function loginAction() {
-        return $this->render('@App/login.html.twig');
-    }
-
     public function adminAction() {
         $project_repository = $this->getDoctrine()->getRepository(Project::class);
         $developer_repository = $this->getDoctrine()->getRepository(Developer::class);
@@ -82,7 +78,7 @@ class MainController extends Controller
         $total_projects = sizeof($project_repository->findAll());
         $total_profiles = sizeof($developer_repository->findAll());
 
-        $criteria_email = array('isRead' => '0');
+        $criteria_email = array('isread' => '0');
         $total_emails = sizeof($email_repository->findBy($criteria_email));
 
         return $this->render('@App/dashboard.html.twig', 

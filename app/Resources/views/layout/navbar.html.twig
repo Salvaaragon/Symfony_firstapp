@@ -12,12 +12,25 @@
                 <li class="nav-item">
                     <a class="nav-link text_link" href="{{ path('contact') }}">Contacto</a>
                 </li>
+                {% if app.user %}
+                <li class="nav-item">
+                    <a class="nav-link text_link" href="{{ path('admin') }}">Administración</a>
+                </li>
+                {% endif %}
             </ul>
+            {% if app.user %}
             <ul class="navbar-nav my-2 my-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link text_link" href="{{ path('login') }}">Login</a>
+                    <a class="nav-link text_link" href="{{ path('logout') }}">Salir</a>
                 </li>
             </ul>
+            {% else %}
+            <ul class="navbar-nav my-2 my-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link text_link" href="{{ path('login') }}">Inicia sesión</a>
+                </li>
+            </ul>
+            {% endif %}
         </div>
     </nav>
 </div>

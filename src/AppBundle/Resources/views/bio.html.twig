@@ -17,9 +17,9 @@
         </div>
         <div class="row row_padding">
             <div class="col-lg-5 offset-lg-7 miclase" align="right">
-                <a href="{{ devp.linkedin }}"><img class="bio_icon icon_linkedin" src="{{ asset('bundles/app/image/icon_linkedin.png') }}"></a>
-                <a href="{{ devp.twitter }}"><img  class="bio_icon icon_twitter" src="{{ asset('bundles/app/image/icon_twitter.png') }}"></a>
-                <a href="{{ devp.email }}"><img class="bio_icon icon_gmail" src="{{ asset('bundles/app/image/icon_gmail.png') }}"></a>
+                <a href="{{ devp.linkedin }}" target="_blank"><img class="bio_icon icon_linkedin" src="{{ asset('bundles/app/image/icon_linkedin.png') }}"></a>
+                <a href="{{ devp.twitter }}" target="_blank"><img  class="bio_icon icon_twitter" src="{{ asset('bundles/app/image/icon_twitter.png') }}"></a>
+                <a href="{{ devp.github }}" target="_blank"><img class="bio_icon icon_gmail" src="{{ asset('bundles/app/image/icon_github.png') }}"></a>
         
             </div>
         </div>
@@ -36,9 +36,9 @@
         </div>
         <div class="row row_padding">
             <div class="col-lg-5 miclase" align="left">
-                <a href="{{ devp.linkedin }}"><img class="bio_icon icon_linkedin" src="{{ asset('bundles/app/image/icon_linkedin.png') }}"></a>
-                <a href="{{ devp.twitter }}"><img class="bio_icon icon_twitter" src="{{ asset('bundles/app/image/icon_twitter.png') }}"></a>
-                <a href="{{ devp.email }}"><img class="bio_icon icon_gmail" src="{{ asset('bundles/app/image/icon_gmail.png') }}"></a>
+                <a href="{{ devp.linkedin }}" target="_blank"><img class="bio_icon icon_linkedin" src="{{ asset('bundles/app/image/icon_linkedin.png') }}"></a>
+                <a href="{{ devp.twitter }}" target="_blank"><img class="bio_icon icon_twitter" src="{{ asset('bundles/app/image/icon_twitter.png') }}"></a>
+                <a href="{{ devp.github }}" target="_blank"><img class="bio_icon icon_gmail" src="{{ asset('bundles/app/image/icon_github.png') }}"></a>
         
             </div>
         </div>
@@ -69,9 +69,9 @@
         });
 
         $( ".icon_gmail" ).mouseenter(function() {
-            $( this ).attr("src", "{{ asset('bundles/app/image/icon_gmail_hover.png') }}")
+            $( this ).attr("src", "{{ asset('bundles/app/image/icon_github_hover.png') }}")
         }).mouseleave(function() {
-            $( this ).attr("src", "{{ asset('bundles/app/image/icon_gmail.png') }}")
+            $( this ).attr("src", "{{ asset('bundles/app/image/icon_github.png') }}")
         });
     });
 </script>
