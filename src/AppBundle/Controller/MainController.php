@@ -40,7 +40,7 @@ class MainController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $contact->setEmail($form->get("email")->getData());
                 $contact->setMessage($form->get("message")->getData());
-                $contact->setIsReaded(false);
+                $contact->setIsRead(false);
                 $date = date('Y-m-d H:i:s');
                 $contact->setDate($date);
                 $em->persist($contact);
@@ -81,15 +81,18 @@ class MainController extends Controller
 
         $total_projects = sizeof($project_repository->findAll());
         $total_profiles = sizeof($developer_repository->findAll());
-        $total_emails = sizeof($email_repository->findAll());
 
-        $date = date('Y-m-d H:i:s');
+        $criteria_email = array('isRead' => '0');
+        $total_emails = sizeof($email_repository->findBy($criteria_email));
 
         return $this->render('@App/dashboard.html.twig', 
             array("projects" => $total_projects, 
                   "profiles" => $total_profiles, 
-                  "emails" => $total_emails,
-                  "date" => $date
+                  "emails" => $total_emails
                 ));
+    }
+
+    public function inboxAction() {
+        return $this->render('@App/inbox.html.twig');
     }
 }

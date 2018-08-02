@@ -41,9 +41,9 @@ class Contact
 
     /**
      * @var bool
-     * @ORM\Column(name="isReaded", type="boolean", nullable=false)
+     * @ORM\Column(name="isRead", type="boolean", nullable=false)
      */
-    private $isReaded;
+    private $isRead;
 
     
     /**
@@ -65,8 +65,8 @@ class Contact
         return $this->message;
     }
 
-    public function getIsReaded() {
-        return $this->isReaded;
+    public function getIsRead() {
+        return $this->isRead;
     }
 
     public function getDate() {
@@ -81,8 +81,8 @@ class Contact
         $this->message = $message;
     }
 
-    public function setIsReaded($isReaded) {
-        $this->isReaded = $isReaded;
+    public function setIsRead($isRead) {
+        $this->isRead = $isRead;
     }
 
     public function setDate($date) {

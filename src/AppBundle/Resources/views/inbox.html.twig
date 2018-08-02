@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class = "inbox_title"><legend><b>Bandeja de entrada</b></legend></div>
+<table data-toggle="table" data-locale="en-US">
+</table>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $('table').bootstrapTable({locale:'es-ES'});
+</script>
+{% endblock %}

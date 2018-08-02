@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `Contact` (
   `id` int(11) NOT NULL,
   `email` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `message` varchar(1024) COLLATE utf8_unicode_ci NOT NULL,
-  `isReaded` tinyint(1) NOT NULL,
+  `isRead` tinyint(1) NOT NULL,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
