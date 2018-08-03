@@ -15,6 +15,13 @@ class Project
     /**
      * @var string
      *
+     * @ORM\Column(name="title", type="string", length=100, nullable=false)
+     */
+    private $title;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="description", type="string", length=100, nullable=false)
      */
     private $description;
@@ -50,6 +57,10 @@ class Project
         return $this->image;
     }
 
+    public function getTitle() {
+        return $this->title;
+    }
+
     public function getDescription() {
         return $this->description;
     }
@@ -62,6 +73,10 @@ class Project
         $this->image = $image;
     }
 
+    public function setTitle($title) {
+        $this->title = $title;
+    }
+    
     public function setDescription($description) {
         $this->description = $description;
     }

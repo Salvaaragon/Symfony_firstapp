@@ -63,7 +63,8 @@ CREATE TABLE IF NOT EXISTS `Developer` (
 
 CREATE TABLE IF NOT EXISTS `Project` (
   `id` int(11) NOT NULL,
-  `description` varchar(100) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `description` varchar(1000) NOT NULL,
   `url` varchar(100) DEFAULT NULL,
   `image` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

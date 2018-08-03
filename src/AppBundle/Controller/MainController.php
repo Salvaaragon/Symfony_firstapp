@@ -20,7 +20,10 @@ class MainController extends Controller
     }
     
     public function indexAction() {
-        return $this->render('@App/index.html.twig');
+        $repository = $this->getDoctrine()->getRepository(Project::class);
+        $projects = $repository->findAll();
+        
+        return $this->render('@App/index.html.twig', array("projects" => $projects));
     }
 
     public function aboutUsAction() {

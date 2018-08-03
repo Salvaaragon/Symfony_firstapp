@@ -11,26 +11,28 @@
     
 </div>
 
+{% for proj in projects %}
 <div class="row no-margin margin_top">
     <div class="col-lg-1 offset-lg-1">
         <img class ="bio_icon" src="{{ asset('bundles/app/image/snasa.png') }}">
     </div>
     <div class="col-lg-3">
-        <p> Proyecto ultramente secreto</p>
+        <p> {{ proj.title }} </p>
     </div>
 </div>
 <div class="row no-margin margin_top">
     <div class="col-lg-7 offset-lg-1">
-        <p> Es como la nasa pero secreta. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p> {{ proj.description }} </p>
     </div>
 </div>
 <div class="row no-margin">
     <div class="col-lg-7 offset-lg-1 color_text_link">
-        <!-- <a href="http://www.aquiTuPagina.com">TuPagina</a> -->
         <b>
-            <p>EstoEsLAPruebaDeUnLink.com</p>
+            <a href="{{ proj.url }}"> Juan valdés </a>
+
         </b>
     </div>
 </div>
+{% endfor %}
 
 {% endblock %}

@@ -23,7 +23,7 @@
     user: root
     pass: mysql
 
-- Genetare entities from existing database
+- Generate entities from existing database
     php bin/console doctrine:mapping:import --force AppBundle xml
     php bin/console doctrine:mapping:convert annotation ./src
 
