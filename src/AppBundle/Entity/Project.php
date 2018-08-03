@@ -22,7 +22,7 @@ class Project
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=100, nullable=false)
+     * @ORM\Column(name="description", type="string", length=1000, nullable=false)
      */
     private $description;
 
