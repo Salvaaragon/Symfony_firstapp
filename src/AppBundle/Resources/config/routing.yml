@@ -25,3 +25,31 @@ inbox:
 register:
     path: /register
     defaults: { _controller: AppBundle:User:register }
+
+emails_json:
+    path: /admin/emails_json
+    defaults: { _controller: AppBundle:Main:getJsonEmails }
+
+unread_email:
+    path: /admin/unread_email
+    defaults: { _controller: AppBundle:Main:unReadEmail }
+
+read_email:
+    path: /admin/read_email
+    defaults: { _controller: AppBundle:Main:readEmail }
+
+delete_email:
+    path: /admin/delete_email
+    defaults: { _controller: AppBundle:Main:deleteEmail }
+
+unread_email_id:
+    path: /admin/unread_email_id
+    defaults: { _controller: AppBundle:Main:unreadEmailId }
+
+read_email_id:
+    path: /admin/read_email_id
+    defaults: { _controller: AppBundle:Main:readEmailId }
+
+delete_email_id:
+    path: /admin/delete_email_id
+    defaults: { _controller: AppBundle:Main:deleteEmailId }
