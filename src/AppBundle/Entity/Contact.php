@@ -31,7 +31,7 @@ class Contact
      *
      * @ORM\Column(name="isRead", type="boolean", nullable=false)
      */
-    private $isread;
+    private $isRead;
 
     /**
      * @var \DateTime

@@ -2,12 +2,235 @@
 
 {% block body %}
 <div class = "inbox_title"><legend><b>Bandeja de entrada</b></legend></div>
-<table data-toggle="table" data-locale="en-US">
-</table>
+<div id ="toolbar" class="inbox_toolbar">
+  <button id="response_email" class="btn btn-info">
+    <i class="fa fa-external-link"></i> Responder
+  </button>
+  <button id="unread_email" class="btn btn-primary">
+    <i class="fa fa-envelope-o"></i> Marcar como no leído
+  </button>
+  <button id="read_email" class="btn btn-success">
+    <i class="fa fa-envelope-open-o"></i> Marcar como leído
+  </button>
+  <button id="delete_email" class="btn btn-danger">
+    <i class="fa fa-remove"></i> Eliminar email
+  </button>
+</div>
+<div class="col-lg-10 offset-lg-1">
+  <table id="table"
+         data-locale="es-ES"
+         data-search="true"
+         data-pagination="true"
+         data-toggle="table"
+         data-toolbar="#toolbar"
+         data-page-size="10"
+         data-url= "{{ path('emails_json') }}">
+    <thead>
+      <tr>
+        <th data-field="state" data-checkbox="true"></th>
+        <th data-field="id" data-visible="false">Id</th>
+        <th data-field="email" data-formatter="emailFormatter" data-width="245px">Correo electrónico</th>
+        <th data-field="message" data-formatter="messageFormatter">Mensaje</th>
+        <th data-field="isRead" data-visible="false">Leído</th>
+        <th data-field="date" data-formatter="dateFormatter" data-width="150px" 
+            data-halign="left" data-align="center">Fecha</th>
+        <th data-field="action" data-formatter="actionFormatter" data-width="195px">Acciones</th>
+      </tr>
+    </thead>
+  </table>
+</div>
 {% endblock %}
 
 {% block javascripts %}
 <script>
-    $('table').bootstrapTable({locale:'es-ES'});
+const $response = $('#response_email');
+const $unread = $('#unread_email');
+const $read = $('#read_email');
+const $remove = $('#delete_email');
+const $table = $('#table');
+let selections = [];
+
+function emailFormatter(value, row, index, field) {
+  email = row.email;
+  if(email.length > 29) email = email.substring(0,26) + "...";
+  if (!row.isRead) {
+    return "<a class='inbox_texthover'><b>"+email+"</b><span>"+row.email+"</span></a>";
+  } else {
+    return "<a class='inbox_texthover'>"+email+"<span>"+row.email+"</span></a>";;
+  }
+}
+
+function messageFormatter(value, row, index, field) {
+  message = row.message;
+  if(message.length > 49) message = message.substring(0,49) + "...";
+  if (!row.isRead) {
+    return "<a href='#' class='message_inbox'><b>"+message+"</b></a>";
+  } else {
+    return "<a href='#' class='message_inbox'>"+message+"</a>";
+  }
+}
+
+function dateFormatter(value, row, index, field) {
+  if (!row.isRead) {
+    return "<b>"+row.date+"</b>";
+  } else {
+    return row.date;
+  }
+}
+
+function actionFormatter(value, row, index, field) {
+  return "<button id='response_email_id' class='btn btn-info' onclick='response_email_id("+row.id+")'><i class='fa fa-external-link' style='color:white;'></i></button>"
+  +" <button id='unread_email_id' class='btn btn-primary' onclick='unread_email_id("+row.id+")'><i class='fa fa-envelope-o'></i></button>"
+  +" <button id='read_email_id' class='btn btn-success' onclick='read_email_id("+row.id+")'><i class='fa fa-envelope-open-o'></i></button>"
+  +" <button id='delete_email_id' class='btn btn-danger' onclick='delete_email_id("+row.id+")'><i class='fa fa-remove'></i></button>";
+}
+
+$table.on('check.bs.table uncheck.bs.table ' +
+            'check-all.bs.table uncheck-all.bs.table', () => {
+    $response.prop('disabled', !$table.bootstrapTable('getSelections').length);
+    $unread.prop('disabled', !$table.bootstrapTable('getSelections').length);
+    $read.prop('disabled', !$table.bootstrapTable('getSelections').length);
+    $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
+    // save your data, here just save the current page
+    selections = getIdSelections();
+    if(selections.length !=0) {
+    if(selections.length > 1) $response.prop('disabled', "disabled");
+    else $response.prop('disabled', "");
+    }
+    // push or splice the selections if you want to save all data selections
+  });
+
+function getIdSelections() {
+  return $.map($table.bootstrapTable('getSelections'), ({id}) => id);
+}
+
+$( document ).ready(function() {
+  $('#table').on('post-body.bs.table', function (data) {
+    $('#table').bootstrapTable('uncheckAll');
+  });
+});
+
+$("#unread_email").click(function() {
+  if(selections != null) {
+    var data = {}
+    data['ids'] = selections;
+    $.ajax({
+      url:'{{ path("unread_email") }}',
+      type: "POST",
+      data: data,
+      success: function (data) {
+        //alert("Perfecto!");
+        //console.log(data)
+        $table.bootstrapTable('refresh');
+      },
+      error : function(xhr, status, errorMessage) {
+        //alert("Algo salió mal");
+        //new Notification("error","Oppsss!!!","Parece que algo salio mal.");
+      }
+    });
+  }
+});
+
+$("#read_email").click(function() {
+  if(selections != null) {
+    var data = {}
+    data['ids'] = selections;
+
+    $.ajax({
+      url:'{{ path("read_email") }}',
+      type: "POST",
+      data: data,
+      success: function (data) {
+        //alert("Perfecto!");
+        //console.log(data)
+        $table.bootstrapTable('refresh');
+      },
+      error : function(xhr, status, errorMessage) {
+        //alert("Algo salió mal");
+        //new Notification("error","Oppsss!!!","Parece que algo salio mal.");
+      }
+    });
+  }
+});
+
+$("#delete_email").click(function() {
+  if(selections != null) {
+    var data = {}
+    data['ids'] = selections;
+
+    $.ajax({
+      url:'{{ path("delete_email") }}',
+      type: "POST",
+      data: data,
+      success: function (data) {
+        //alert("Perfecto!");
+        //console.log(data)
+        $table.bootstrapTable('refresh');
+      },
+      error : function(xhr, status, errorMessage) {
+        //alert("Algo salió mal");
+        //new Notification("error","Oppsss!!!","Parece que algo salio mal.");
+      }
+    });
+  }
+});
+
+function unread_email_id(id) {
+  var data = {}
+  data['id'] = id;
+  $.ajax({
+      url:'{{ path("unread_email_id") }}',
+      type: "POST",
+      data: data,
+      success: function (data) {
+        //alert("Perfecto!");
+        //console.log(data)
+        $table.bootstrapTable('refresh');
+      },
+      error : function(xhr, status, errorMessage) {
+        alert(errorMessage);
+        //new Notification("error","Oppsss!!!","Parece que algo salio mal.");
+      }
+    });
+}
+
+function read_email_id(id) {
+  var data = {}
+  data['id'] = id;
+  $.ajax({
+      url:'{{ path("read_email_id") }}',
+      type: "POST",
+      data: data,
+      success: function (data) {
+        //alert("Perfecto!");
+        //console.log(data)
+        $table.bootstrapTable('refresh');
+      },
+      error : function(xhr, status, errorMessage) {
+        alert(errorMessage);
+        //new Notification("error","Oppsss!!!","Parece que algo salio mal.");
+      }
+    });
+}
+
+function delete_email_id(id) {
+  var data = {}
+  data['id'] = id;
+  $.ajax({
+      url:'{{ path("delete_email_id") }}',
+      type: "POST",
+      data: data,
+      success: function (data) {
+        //alert("Perfecto!");
+        //console.log(data)
+        $table.bootstrapTable('refresh');
+      },
+      error : function(xhr, status, errorMessage) {
+        alert(errorMessage);
+        //new Notification("error","Oppsss!!!","Parece que algo salio mal.");
+      }
+    });
+}
+
 </script>
-{% endblock %}
+{% endblock %} 

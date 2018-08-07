@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use AppBundle\Form\ContactType;
 use AppBundle\Entity\Contact;
 use AppBundle\Entity\Developer;
@@ -40,11 +41,12 @@ class MainController extends Controller
         $form->handleRequest($request);
         if($form->isSubmitted()) {
             if($form->isValid()) {
+                date_default_timezone_set('Europe/Madrid');
                 $em = $this->getDoctrine()->getManager();
                 $contact->setEmail($form->get("email")->getData());
                 $contact->setMessage($form->get("message")->getData());
                 $contact->setIsRead(false);
-                $date = date('Y-m-d H:i:s');
+                $date = new \DateTime;
                 $contact->setDate($date);
                 $em->persist($contact);
                 $flush = $em->flush();
@@ -81,7 +83,7 @@ class MainController extends Controller
         $total_projects = sizeof($project_repository->findAll());
         $total_profiles = sizeof($developer_repository->findAll());
 
-        $criteria_email = array('isread' => '0');
+        $criteria_email = array('isRead' => '0');
         $total_emails = sizeof($email_repository->findBy($criteria_email));
 
         return $this->render('@App/dashboard.html.twig', 
@@ -92,6 +94,115 @@ class MainController extends Controller
     }
 
     public function inboxAction() {
+        return $this->render('@App/inbox.html.twig');
+    }
+
+    public function getJsonEmailsAction() {
+        $email_repository = $this->getDoctrine()->getRepository(Contact::class);
+        $em = $this->getDoctrine()->getManager();
+
+        $email_query = $em
+            ->getRepository(Contact::class)
+            ->createQueryBuilder('e')
+            ->addOrderBy('e.date', 'DESC')
+            ->getQuery()
+            ->execute()
+        ;
+        //$email_query = $email_repository->findAll();
+        foreach ($email_query as $email) {
+            $emails[] = array(
+                'id' => $email->getId(),
+                'email' => $email->getEmail(),
+                'message' => $email->getMessage(),
+                'isRead' => $email->getIsRead(),
+                'date' => $email->getDate()->format('d-m-Y H:i')
+                );
+        }
+        return new JsonResponse($emails);
+    }
+
+    public function unReadEmailAction(Request $request = null) {
+        $id_emails = $request->request->get('ids');
+        if($id_emails){
+            $entityManager = $this->getDoctrine()->getManager();
+            $email_repository = $entityManager->getRepository(Contact::class);
+
+            foreach ($id_emails as $id) {
+                $email = $email_repository->find($id);
+                $email->setIsRead(0);
+                $entityManager->flush();
+            } 
+        }
+
+        return $this->render('@App/inbox.html.twig');
+    }
+
+    public function readEmailAction(Request $request = null) {
+        $id_emails = $request->request->get('ids');
+        if($id_emails){
+            $entityManager = $this->getDoctrine()->getManager();
+            $email_repository = $entityManager->getRepository(Contact::class);
+
+            foreach ($id_emails as $id) {
+                $email = $email_repository->find($id);
+                $email->setIsRead(1);
+                $entityManager->flush();
+            } 
+        }
+
+        return $this->render('@App/inbox.html.twig');
+    }
+
+    public function deleteEmailAction(Request $request = null) {
+        $id_emails = $request->request->get('ids');
+        if($id_emails){
+            $entityManager = $this->getDoctrine()->getManager();
+            $email_repository = $entityManager->getRepository(Contact::class);
+
+            foreach ($id_emails as $id) {
+                $email = $email_repository->find($id);
+                $entityManager->remove($email);
+                $entityManager->flush();
+            }
+            
+        }
+
+        return $this->render('@App/inbox.html.twig');
+    }
+
+    public function unreadEmailIdAction(Request $request = null) {
+
+        $id_email = $request->request->get('id');
+        $entityManager = $this->getDoctrine()->getManager();
+        $email_repository = $entityManager->getRepository(Contact::class);
+        $email = $email_repository->find($id_email);
+        $email->setIsRead(0);
+        $entityManager->flush();
+
+        return $this->render('@App/inbox.html.twig');
+    }
+
+    public function readEmailIdAction(Request $request = null) {
+
+        $id_email = $request->request->get('id');
+        $entityManager = $this->getDoctrine()->getManager();
+        $email_repository = $entityManager->getRepository(Contact::class);
+        $email = $email_repository->find($id_email);
+        $email->setIsRead(1);
+        $entityManager->flush();
+
+        return $this->render('@App/inbox.html.twig');
+    }
+
+    public function deleteEmailIdAction(Request $request = null) {
+
+        $id_email = $request->request->get('id');
+        $entityManager = $this->getDoctrine()->getManager();
+        $email_repository = $entityManager->getRepository(Contact::class);
+        $email = $email_repository->find($id_email);
+        $entityManager->remove($email);
+        $entityManager->flush();
+
         return $this->render('@App/inbox.html.twig');
     }
 }

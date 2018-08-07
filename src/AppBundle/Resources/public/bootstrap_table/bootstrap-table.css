@@ -149,7 +149,7 @@
 }
 
 .fixed-table-pagination div.pagination .pagination {
-    margin: 0;
+    margin-bottom: 50px;
 }
 
 .fixed-table-pagination .pagination a {
@@ -193,7 +193,10 @@
 }
 
 .fixed-table-toolbar .bs-bars,
-.fixed-table-toolbar .search,
+.fixed-table-toolbar .search {
+    width: 420px;
+    margin-bottom: 10px;
+}
 .fixed-table-toolbar .columns {
     position: relative;
     margin-top: 10px;
