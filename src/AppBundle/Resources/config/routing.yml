@@ -64,3 +64,11 @@ read_email_id:
 delete_email_id:
     path: /admin/delete_email_id
     defaults: { _controller: AppBundle:Main:deleteEmailId }
+
+get_email_by_id:
+    path: /admin/get_email_id
+    defaults: { _controller: AppBundle:Main:getEmailId }
+
+send_email:
+    path: /admin/send_email
+    defaults: { _controller: AppBundle:Main:sendEmail }

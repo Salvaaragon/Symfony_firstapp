@@ -11,6 +11,7 @@ use AppBundle\Form\ContactType;
 use AppBundle\Entity\Contact;
 use AppBundle\Entity\Developer;
 use AppBundle\Entity\Project;
+use AppBundle\Entity\User;
 
 class MainController extends Controller 
 {
@@ -94,7 +95,17 @@ class MainController extends Controller
     }
 
     public function inboxAction() {
-        return $this->render('@App/inbox.html.twig');
+        $user_repository = $this->getDoctrine()->getRepository(User::class);
+        $users = $user_repository->findBy(array('isactive' => 1));
+
+        foreach($users as $u) {
+            $user_emails[] = array('email' => $u->getEmail());
+        }
+        
+        if(isset($user_emails)) 
+            return $this->render('@App/inbox.html.twig', array('user_emails' => $user_emails));
+        else
+           return $this->render('@App/inbox.html.twig');
     }
 
     public function getJsonEmailsAction() {
@@ -108,7 +119,7 @@ class MainController extends Controller
             ->getQuery()
             ->execute()
         ;
-        //$email_query = $email_repository->findAll();
+
         foreach ($email_query as $email) {
             $emails[] = array(
                 'id' => $email->getId(),
@@ -118,7 +129,8 @@ class MainController extends Controller
                 'date' => $email->getDate()->format('d-m-Y H:i')
                 );
         }
-        return new JsonResponse($emails);
+        if(isset($emails)) return new JsonResponse($emails);
+        else return new JsonResponse();
     }
 
     public function unReadEmailAction(Request $request = null) {
@@ -133,7 +145,6 @@ class MainController extends Controller
                 $entityManager->flush();
             } 
         }
-
         return $this->render('@App/inbox.html.twig');
     }
 
@@ -149,7 +160,6 @@ class MainController extends Controller
                 $entityManager->flush();
             } 
         }
-
         return $this->render('@App/inbox.html.twig');
     }
 
@@ -163,10 +173,8 @@ class MainController extends Controller
                 $email = $email_repository->find($id);
                 $entityManager->remove($email);
                 $entityManager->flush();
-            }
-            
+            }  
         }
-
         return $this->render('@App/inbox.html.twig');
     }
 
@@ -205,4 +213,27 @@ class MainController extends Controller
 
         return $this->render('@App/inbox.html.twig');
     }
+
+    public function getEmailIdAction(Request $request = null) {
+        $id_email = $request->request->get('id');
+        $email_repository = $this->getDoctrine()->getRepository(Contact::class);
+        $email = $email_repository->find($id_email);
+
+        $data[] = array('email' => $email->getEmail());
+
+        return new JsonResponse($data);
+    }
+
+    public function sendEmailAction(\Swift_Mailer $mailer){
+        $message = (new \Swift_Message('Hello Email'))
+        ->setSubject('Mensaje de la web')
+        ->setFrom('symfonypruebas18@gmail.com')
+        ->setTo('salvaaragon94@gmail.com')
+        ->setBody('Me llamo Eusebio');
+
+        $mailer->send($message);
+
+        return new JsonResponse();
+    }
+
 }

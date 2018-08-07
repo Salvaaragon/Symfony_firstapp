@@ -50,3 +50,47 @@ a.inbox_texthover:hover span {
     text-decoration-line: none;
     color: black;
 }
+
+.modal.show_message {
+    top: 14%;
+    z-index: 10040;
+}
+
+.modal-dialog.show_message{
+    overflow-y: initial !important
+}
+.modal-body.show_message{
+    height: 250px;
+    overflow-y: auto;
+}
+
+.modal.resp_email {
+    top:12%;
+}
+
+.modal.del_email {
+    top: 31%;
+}
+
+.modal-text {
+    font-size: 18.6px;
+}
+
+.modal-button-bar {
+    text-align: right;
+}
+
+.response_message {
+    resize: none;
+    height: 180px;
+    margin-bottom: 10px;
+}
+
+.modal-text-email{
+    font-size: 17.49px;
+}
+
+.no_email_text {
+    font-size: 14px;
+    text-align: center;
+}

@@ -8,7 +8,7 @@
     padding: 0.4rem;
     background-color: var(--main-color);
     text-align: center;
-    z-index: 99999;
+    /*z-index: 99999;*/
   }
 
 .text_color {

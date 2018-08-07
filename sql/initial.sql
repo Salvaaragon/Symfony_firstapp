@@ -88,8 +88,10 @@ CREATE TABLE IF NOT EXISTS `User` (
 -- Volcado de datos para la tabla `User`
 --
 
-INSERT INTO `User` (`id`, `username`, `email`, `password`, `roles`, `isActive`) VALUES
-(1, 'ldgarciabernal@gmail.com', 'ldgarciabernal@gmail.com', '$2y$13$Ds2yz2weIevIZV/M8JufY.Bs702sa7eNCGecktwv1TE4bngv2dbz.', 'a:1:{i:0;s:10:"ROLE_ADMIN";}', 1);
+INSERT INTO `User` (`username`, `email`, `password`, `roles`, `isActive`) VALUES
+('ldgarciabernal@gmail.com', 'ldgarciabernal@gmail.com', '$2y$13$Ds2yz2weIevIZV/M8JufY.Bs702sa7eNCGecktwv1TE4bngv2dbz.', 'a:1:{i:0;s:10:"ROLE_ADMIN";}', 1);
+INSERT INTO `User` (`username`, `email`, `password`, `roles`, `isActive`) VALUES
+('salva.aragonreyes@gmail.com', 'salva.aragonreyes@gmail.com', '$2y$13$Ds2yz2weIevIZV/M8JufY.Bs702sa7eNCGecktwv1TE4bngv2dbz.', 'a:1:{i:0;s:10:"ROLE_ADMIN";}', 1);
 
 --
 -- Índices para tablas volcadas
