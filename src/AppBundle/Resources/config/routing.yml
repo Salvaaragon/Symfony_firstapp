@@ -25,3 +25,15 @@ inbox:
 register:
     path: /register
     defaults: { _controller: AppBundle:User:register }
+
+developer:
+    path: /admin/developer
+    defaults: { _controller: AppBundle:Admin:developer }
+
+developers_json:
+    path: /admin/developers_json
+    defaults: { _controller: AppBundle:Admin:getJsonDeveloper }
+
+save_developer:
+    path: /admin/save_developer
+    defaults: { _controller: AppBundle:Admin:saveDeveloper }

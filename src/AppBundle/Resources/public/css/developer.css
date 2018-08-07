@@ -1,0 +1,14 @@
+
+.dev_links {
+    text-decoration-line: none;
+    color: #000;
+}
+
+.dev_links:hover {
+    text-decoration-line: none;
+    color: #dc3545;
+}
+
+.form_modal_space {
+    margin-bottom: 20px !important;
+}

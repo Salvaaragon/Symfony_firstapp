@@ -1,0 +1,189 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class = "inbox_title"><legend><b>Desarrolladores</b></legend></div>
+<div id ="toolbar" class="inbox_toolbar">
+  <button id="new_developer" class="btn btn-success" data-toggle="modal" data-target="#new_developer_modal">
+    <i class="fa fa-external-link"></i> Nuevo
+  </button>
+  <button id="edit_developer" class="btn btn-primary">
+    <i class="fa fa-envelope-o"></i> Editar
+  </button>
+  <button id="delete_developer" class="btn btn-danger">
+    <i class="fa fa-remove"></i> Eliminar
+  </button>
+</div>
+
+<div class="col-lg-10 offset-lg-1">
+    <table id="table"
+           data-search="true"
+           data-pagination="true"
+           data-toggle="table"
+           data-toolbar="#toolbar"
+           data-page-list="[10, 25, 50, 100, ALL]"
+           data-url= "{{ path('developers_json') }}">
+      <thead>
+        <tr>
+          <th data-field="state" data-checkbox="true"></th>
+          <th data-field="id" data-visible="false">Id</th>
+          <th data-field="name" data-width="160px">Nombre</th>
+          <th data-field="surname" data-width="160px">Apellidos</th>
+          <th data-field="personalInformation">Información personal</th>
+          <th data-field="" data-formatter="linksFormatter">Redes</th>
+          <!--<th data-field="linkedin">Linkedin</th>
+          <th data-field="twitter">Twitter</th>
+          <th data-field="github">Github</th> -->
+        </tr>
+      </thead>
+    </table>
+  </div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="new_developer_modal" tabindex="-1" role="dialog" aria-labelledby="new_developer_modalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="new_developer_modalLabel">Nuevo desarrollador</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row form-group">
+            <label for="new_dev_name" class="col-sm-2 col-form-label">Nombre: </label>
+            <div class="col-sm-9 form_modal_space">
+                <input class="form-control mx-sm-3" type="text" name="devs_name" id="new_dev_name">
+            </div>
+            
+            <label for="new_dev_surname" class="col-sm-2 col-form-label">Apellido: </label>
+            <div class="col-sm-9 form_modal_space">
+                <input type="text" class="form-control mx-sm-3" name="devs_surname" id="new_dev_surname">
+            </div>
+
+            <label for="new_dev_pinfo" class="col-sm-2 col-form-label">Descripción: </label>
+            <div class="col-sm-9 form_modal_space">
+                <textarea class="form-control mx-sm-3" style="resize: none;" id="new_dev_pinfo"></textarea>
+            </div>
+
+            <label for="new_dev_linkedin" class="col-sm-2 col-form-label">Linkedin: </label>
+            <div class="col-sm-9 form_modal_space">
+                <input type="text" class="form-control mx-sm-3" name="devs_linkedin" id="new_dev_linkedin">
+            </div>
+
+            <label for="new_dev_twitter" class="col-sm-2 col-form-label">Twitter: </label>
+            <div class="col-sm-9 form_modal_space">
+                <input type="text" class="form-control mx-sm-3" name="devs_twitter" id="new_dev_twitter">
+            </div>
+
+            <label for="new_dev_github" class="col-sm-2 col-form-label">Github: </label>
+            <div class="col-sm-9 form_modal_space">
+                <input type="text" class="form-control mx-sm-3" name="devs_github" id="new_dev_github">
+            </div>
+            
+            <label for="new_dev_image" class="col-sm-2 col-form-label">Imagen: </label>
+            <div class="col-sm-9 form_modal_space">
+              <input type="file" name="pic" class="mx-sm-3" name="devs_image" id="new_dev_image" accept="image/*">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="close_dev_moda();">Cerrar</button>
+          <button type="button" class="btn btn-primary" onclick="save_developer();">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    const $new = $('#new_developer');
+    const $edit = $('#edit_developer');
+    const $remove = $('#delete_developer');
+    const $table = $('#table');
+    let selections = [];
+    
+    function linksFormatter(value, row, index, field) {
+        linkedin  = linkedin_link = row.linkedin;
+        twitter = twitter_link = row.twitter;
+        github = github_link = row.github;
+
+        if (linkedin == null) linkedin = '-------'; linkedin_link = '#' ;
+        if (twitter == null) twitter = '-------'; twitter_link = '#' ;
+        if (github == null) github = '-------'; github_link = '#' ;
+
+        return '<ul><li><a  class="dev_links" href="'+ linkedin_link +'">'+ linkedin +'</a></li>'+
+               '<li><a class="dev_links" href="'+ twitter_link +'">'+ twitter +'</a></li>' +
+               '<li><a class="dev_links" href="'+ twitter_link +'">'+ github +'</a></li>';
+    }
+
+    function check_enable_button_edit(selected_length) {
+        if (selected_length != 0) {
+            if (selected_length > 1) {
+                $edit.prop('disabled', 'disabled');
+            } else {
+                $edit.prop('disabled', '');
+            }
+        }
+    }
+
+    $table.on('check.bs.table uncheck.bs.table ' +
+                'check-all.bs.table uncheck-all.bs.table', () => {
+        $edit.prop('disabled', !$table.bootstrapTable('getSelections').length);
+        $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
+        // save your data, here just save the current page
+        selections = getIdSelections();
+        check_enable_button_edit(selections.length);
+        // push or splice the selections if you want to save all data selections
+      });
+    
+    function getIdSelections() {
+      return $.map($table.bootstrapTable('getSelections'), ({id}) => id);
+    }
+    
+    $( document ).ready(function() {
+    
+      $('#table').on('post-body.bs.table', function (data) {
+        $('#table').bootstrapTable('uncheckAll');
+      });
+    });
+
+    function save_developer() {
+        // first take a dato to inputs
+        var data = {}
+        data['name'] = $('#new_dev_name').val();
+        data['surname'] = $('#new_dev_surname').val();
+        data['pinformation'] = $('#new_dev_pinfo').val();
+        data['linkedin'] = $('#new_dev_linkedin').val();
+        data['twitter'] = $('#new_dev_twitter').val();
+        data['github'] = $('#new_dev_github').val();
+
+        $.ajax({
+            method: 'POST',
+            url: "{{ path('save_developer') }}", 
+            data: data,
+            success: function(result){
+                $('#new_developer_modal').hide();
+                $('#table').bootstrapTable('refresh');
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(xhr.status);
+                alert(thrownError);
+            }
+        });
+    }
+
+    function close_dev_moda() {
+        $('#new_dev_name').val("");
+        $('#new_dev_surname').val("");
+        $('#new_dev_pinfo').val("");
+        $('#new_dev_linkedin').val("");
+        $('#new_dev_twitter').val("");
+        $('#new_dev_github').val("");
+        
+        $('#new_developer_modal').hide();
+    }
+
+    </script>
+{% endblock %}

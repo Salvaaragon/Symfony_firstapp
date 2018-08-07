@@ -147,12 +147,9 @@ class Developer
      *
      * @param string $image
      *
-     * @return Develop
      */
     public function setImage($image) {
         $this->image = $image;
-
-        return $this;
     }
     
     /**
@@ -160,12 +157,9 @@ class Developer
      *
      * @param string $name
      *
-     * @return Develop
      */
     public function setName($name) {
         $this->name = $name;
-
-        return $this;
     }
 
     /**
@@ -173,12 +167,9 @@ class Developer
      *
      * @param string $surname
      *
-     * @return Develop
      */
-    public function setSurame($surname) {
+    public function setSurname($surname) {
         $this->surname = $surname;
-
-        return $this;
     }
 
     public function setPersonalInformation($personalInformation) {
