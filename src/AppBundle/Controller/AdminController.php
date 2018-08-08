@@ -49,18 +49,71 @@ class AdminController extends Controller
         $linkedin = $request->request->get('linkedin');
         $twitter = $request->request->get('twitter');
         $github = $request->request->get('github');
+        $id = $request->request->get('id');
+        
+        if ($id != null) {
+            
+            $dev_repository = $entityManager->getRepository(Developer::class);
+            $developer = $dev_repository->find($id);
+            $developer->setName($name);
+            $developer->setSurname($surname);
+            $developer->setPersonalInformation($pinfo);
+            $developer->setLinkedin($linkedin);
+            $developer->setTwitter($twitter);
+            $developer->setGithub($github);
+            $developer->setImage("default_bio.png");
+            
+            $entityManager->flush();
+        }else {
+            $developer->setName($name);
+            $developer->setSurname($surname);
+            $developer->setPersonalInformation($pinfo);
+            $developer->setLinkedin($linkedin);
+            $developer->setTwitter($twitter);
+            $developer->setGithub($github);
+            $developer->setImage("default_bio.png");
 
-        $developer->setName($name);
-        $developer->setSurname($surname);
-        $developer->setPersonalInformation($pinfo);
-        $developer->setLinkedin($linkedin);
-        $developer->setTwitter($twitter);
-        $developer->setGithub($github);
-        $developer->setImage("default_bio.png");
-
-        $entityManager->persist($developer);
-        $entityManager->flush();
+            $entityManager->persist($developer);
+            $entityManager->flush();
+        }
 
         return new Response();
+    }
+
+    public function deleteDeveloperAction(Request $request = null) {
+
+        $id_developers = $request->request->get('ids');
+
+        if($id_developers){
+            $entityManager = $this->getDoctrine()->getManager();
+            $developer_repository = $entityManager->getRepository(Developer::class);
+
+            foreach ($id_developers as $id) {
+                $email = $developer_repository->find($id);
+                $entityManager->remove($email);
+                $entityManager->flush();
+            }  
+        }
+        return new Response();
+    }
+
+    public function getDeveloperAction(Request $request = null) {
+
+        $id = $request->request->get('id');
+        $entityManager = $this->getDoctrine()->getManager();
+        $developer_repository = $entityManager->getRepository(Developer::class);
+        $developer = $developer_repository->find($id[0]);
+
+        $developer_json[] = array(
+            'id' => $developer->getId(),
+            'name' => $developer->getName(),
+            'surname' => $developer->getSurname(),
+            'personalInformation' => $developer->getPersonalInformation(),
+            'linkedin' => $developer->getLinkedin(),
+            'twitter' => $developer->getTwitter(),
+            'github' => $developer->getGithub()
+            );
+        
+        return new JsonResponse($developer_json);
     }
 }

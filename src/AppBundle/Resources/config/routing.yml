@@ -37,6 +37,15 @@ developers_json:
 save_developer:
     path: /admin/save_developer
     defaults: { _controller: AppBundle:Admin:saveDeveloper }
+
+delete_developer:
+    path: /admin/delete_developer
+    defaults: { _controller: AppBundle:Admin:deleteDeveloper }
+
+get_developer:
+    path: /admin/get_developer
+    defaults: { _controller: AppBundle:Admin:getDeveloper }
+
 emails_json:
     path: /admin/emails_json
     defaults: { _controller: AppBundle:Main:getJsonEmails }

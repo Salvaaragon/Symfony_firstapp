@@ -21,7 +21,7 @@
         <img class="card-img-top card_image_emails_dashboard" src="{{ asset('bundles/app/image/email_img.png') }}" alt="Card image cap">
         <div class="card-body">
             <p>Tiene {{emails}} mensajes sin leer</p>
-            <a href="#" class="btn btn-primary btn_card_emails_dashboard btn-block">Bandeja de entrada</a>
+            <a href="{{ path('inbox') }}" class="btn btn-primary btn_card_emails_dashboard btn-block">Bandeja de entrada</a>
         </div>
     </div>
 </div>

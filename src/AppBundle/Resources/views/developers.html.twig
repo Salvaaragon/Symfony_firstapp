@@ -4,13 +4,13 @@
 
 <div class = "inbox_title"><legend><b>Desarrolladores</b></legend></div>
 <div id ="toolbar" class="inbox_toolbar">
-  <button id="new_developer" class="btn btn-success" data-toggle="modal" data-target="#new_developer_modal">
+  <button id="new_developer" class="btn btn-success dev_buttons" onclick="open_dev_new_moda();">
     <i class="fa fa-external-link"></i> Nuevo
   </button>
-  <button id="edit_developer" class="btn btn-primary">
+  <button id="edit_developer" class="btn btn-primary dev_buttons" onclick="edit_developer_modal();">
     <i class="fa fa-envelope-o"></i> Editar
   </button>
-  <button id="delete_developer" class="btn btn-danger">
+  <button id="delete_developer" class="btn btn-danger dev_buttons" onclick="delete_developer();">
     <i class="fa fa-remove"></i> Eliminar
   </button>
 </div>
@@ -103,19 +103,37 @@
     const $remove = $('#delete_developer');
     const $table = $('#table');
     let selections = [];
+
+    var type_modal;
+    var dev_id;
+    var dev_name;
+    var dev_surname;
+    var dev_pinformation;
+    var dev_linkedin;
+    var dev_twitter;
+    var dev_github;
     
     function linksFormatter(value, row, index, field) {
         linkedin  = linkedin_link = row.linkedin;
         twitter = twitter_link = row.twitter;
         github = github_link = row.github;
 
-        if (linkedin == null) linkedin = '-------'; linkedin_link = '#' ;
-        if (twitter == null) twitter = '-------'; twitter_link = '#' ;
-        if (github == null) github = '-------'; github_link = '#' ;
+        if (linkedin == null) {
+          linkedin = '-------'; 
+          linkedin_link = '#' ;
+        }
+        if (twitter == null) {
+          twitter = '-------'; 
+          twitter_link = '#';
+        } 
+        if (github == null) {
+          github = '-------'; 
+          github_link = '#' ;
+        }
 
-        return '<ul><li><a  class="dev_links" href="'+ linkedin_link +'">'+ linkedin +'</a></li>'+
-               '<li><a class="dev_links" href="'+ twitter_link +'">'+ twitter +'</a></li>' +
-               '<li><a class="dev_links" href="'+ twitter_link +'">'+ github +'</a></li>';
+        return '<ul><li><a  class="dev_links" target="_black" href="'+ linkedin_link +'">'+ linkedin +'</a></li>'+
+               '<li><a class="dev_links" target="_black" href="'+ twitter_link +'">'+ twitter +'</a></li>' +
+               '<li><a class="dev_links" target="_black" href="'+ twitter_link +'">'+ github +'</a></li>';
     }
 
     function check_enable_button_edit(selected_length) {
@@ -124,6 +142,7 @@
                 $edit.prop('disabled', 'disabled');
             } else {
                 $edit.prop('disabled', '');
+                save_selected_row(selections);
             }
         }
     }
@@ -158,19 +177,85 @@
         data['linkedin'] = $('#new_dev_linkedin').val();
         data['twitter'] = $('#new_dev_twitter').val();
         data['github'] = $('#new_dev_github').val();
+        if (type_modal == 'edit') data['id'] = dev_id;
 
         $.ajax({
             method: 'POST',
             url: "{{ path('save_developer') }}", 
             data: data,
             success: function(result){
-                $('#new_developer_modal').hide();
+                $('#new_developer_modal').modal('hide')
                 $('#table').bootstrapTable('refresh');
             },
             error: function(xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
                 alert(thrownError);
             }
+        });
+    }
+
+    function delete_developer() {
+      var data = {}
+      data['ids'] = selections;
+      
+      $.ajax({
+        method: 'POST',
+        url: "{{ path('delete_developer') }}", 
+        data: data,
+        success: function(result){
+            $('#table').bootstrapTable('refresh');
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert(thrownError);
+        }
+        });
+    }
+
+    function edit_developer(result) {
+        dev = result[0];
+        $('#new_dev_name').val(dev.name);
+        $('#new_dev_surname').val(dev.surname);
+        $('#new_dev_pinfo').val(dev.personalInformation);
+        $('#new_dev_linkedin').val(dev.linkedin);
+        $('#new_dev_twitter').val(dev.twitter);
+        $('#new_dev_github').val(dev.github);
+        dev_id = dev.id;
+        dev_name = dev.name;
+        dev_surname = dev.surname;
+        dev_pinformation = dev.personalInformation;
+        dev_linkedin = dev.linkedin;
+        dev_twitter = dev.twitter;
+        dev_github = dev.github;
+    }
+
+    function edit_developer_modal() {
+
+      $('#new_dev_name').val(dev_name);
+      $('#new_dev_surname').val(dev_surname);
+      $('#new_dev_pinfo').val(dev_pinformation);
+      $('#new_dev_linkedin').val(dev_linkedin);
+      $('#new_dev_twitter').val(dev_twitter);
+      $('#new_dev_github').val(dev_github);
+      type_modal = 'edit';
+      $('#new_developer_modal').modal('toggle');
+    }
+    
+    function save_selected_row(selections_id) {
+      var data = {}
+      data['id'] = selections_id;
+      
+      $.ajax({
+        method: 'POST',
+        url: "{{ path('get_developer') }}", 
+        data: data,
+        success: function(result){
+          edit_developer(result);
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert(thrownError);
+        }
         });
     }
 
@@ -182,7 +267,18 @@
         $('#new_dev_twitter').val("");
         $('#new_dev_github').val("");
         
-        $('#new_developer_modal').hide();
+        $('#new_developer_modal').modal('hide');
+    }
+
+    function open_dev_new_moda() {
+        $('#new_dev_name').val("");
+        $('#new_dev_surname').val("");
+        $('#new_dev_pinfo').val("");
+        $('#new_dev_linkedin').val("");
+        $('#new_dev_twitter').val("");
+        $('#new_dev_github').val("");
+        type_modal = 'new';
+        $('#new_developer_modal').modal('toggle');
     }
 
     </script>

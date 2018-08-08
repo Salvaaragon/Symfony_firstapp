@@ -12,3 +12,8 @@
 .form_modal_space {
     margin-bottom: 20px !important;
 }
+
+.dev_buttons {
+    min-width: 100px;
+    width: 150px;
+}
