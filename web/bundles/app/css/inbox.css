@@ -59,6 +59,7 @@ a.inbox_texthover:hover span {
 .modal-dialog.show_message{
     overflow-y: initial !important
 }
+
 .modal-body.show_message{
     height: 250px;
     overflow-y: auto;
@@ -70,6 +71,10 @@ a.inbox_texthover:hover span {
 
 .modal.del_email {
     top: 31%;
+}
+
+.modal.success-send {
+    top:30%
 }
 
 .modal-text {

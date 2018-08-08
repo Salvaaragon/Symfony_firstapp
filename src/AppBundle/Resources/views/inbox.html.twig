@@ -49,34 +49,45 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header"  style="word-break: break-all;">
-        <h5 class="modal-title">Mensaje para - </h5>
+        <h5 class="modal-title" id="email_to" val="">Mensaje para - </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        {% if user_emails is defined %}
-        <div class="form-group">
-          <select class="form-control" id="email_selector">
-            <option value="0" selected="selected">Seleccione el correo electrónico emisor</option>
-            {% for user_email in user_emails %}
-              <option value="{{ user_email.email }}">{{ user_email.email }}</option>
-            {% endfor %}
-          </select>
+        <div class="form-group email-form">
+          <input type="text" class="form-control email-input" id="email_user" readonly>
         </div>
         <div class="form-group">
-          <input type="text" class="form-control" id="subject" placeholder="Asunto">
+          <input type="text" class="form-control" id="subject" placeholder="Asunto (obligatorio)">
         </div>
         <div class="form-group">
-          <textarea class="form-control response_message" id="message" placeholder="Mensaje"></textarea>
+          <textarea class="form-control response_message" id="message" placeholder="Mensaje (obligatorio)"></textarea>
         </div>
+      </div>
+      <div class="modal-footer">
+        <div class="mr-auto"><p id="required-data" style="color: red"></p></div>
         <div class="modal-button-bar">
-          <button type="button" id="" class="btn btn-secondary">Enviar</button>
+          <button type="button" id="response_email_btn" class="btn btn-primary">Enviar</button>
           <button type="button" onclick="$('#response_email_modal').modal('hide');" class="btn btn-primary">Cancelar</button>
         </div>
-        {% else %}
-        <p class="no_email_text">No existen cuentas activas en nuestra base de datos para enviar el email</p>
-        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Success send notification -->
+<div class="modal fade success-send" id="success_send_modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body">
+        <h4 class="modal-text">Su mensaje se ha enviado correctamente</h4> 
+        <div class="modal-button-bar">
+          <button type="button" onclick="$('#success_send_modal').modal('hide');" class="btn btn-danger">Cerrar</button>
+        </div>
       </div>
     </div>
   </div>
@@ -95,8 +106,8 @@
       <div class="modal-body">
         <p class="modal-text">¿Seguro que desea eliminar el mensaje seleccionado?</p>
         <div class="modal-button-bar">
-          <button type="button" id="delete_email_btn" class="btn btn-secondary">Confirmar</button>
-          <button type="button" onclick="$('#delete_single_modal').modal('hide')" class="btn btn-primary">Cancelar</button>
+          <button type="button" id="delete_email_btn" class="btn btn-primary">Confirmar</button>
+          <button type="button" onclick="$('#delete_single_modal').modal('hide')" class="btn btn-secondary">Cancelar</button>
         </div>
       </div>
     </div>
@@ -155,6 +166,7 @@ const $read = $('#read_email');
 const $remove = $('#delete_email');
 const $table = $('#table');
 let selections = [];
+let email_selections = [];
 
 $('#show_message_modal').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget);
@@ -172,29 +184,20 @@ $('#response_email_modal').on('show.bs.modal', function (event) {
   var data = {}
   var btn_clicked = button.data('btn');
   if(btn_clicked == 1)
-    data['id'] = selections[0];
+    data['email'] = email_selections[0];
   else
-    data['id'] = button.data('id');
+    data['email'] = button.data('email');
 
   var modal = $(this);
-  $.ajax({
-    url:'{{ path("get_email_by_id") }}',
-    type: "POST",
-    dataType: "json",
-    data: data,
-    success: function (data) {
-      modal.find('.modal-title').text('Mensaje para '+data[0].email);
-    },
-    error : function(xhr, status, errorMessage) {
-      alert("Algo salió mal: "+errorMessage);
-    }
-  });
+  modal.find('.modal-body .email-form .email-input').val('youngdevelopers.web@gmail.com');
+  modal.find('.modal-title').text('Mensaje para '+data['email']);
+  modal.find('.modal-title').val(data['email']);
 });
 
-$('#response_email_modal').on('hidden.bs.modal', function(){
-    $('#email_selector').val(0);
+$('#response_email_modal').on('hidden.bs.modal', function() {
     $('#subject').val("");
     $('#message').val("");
+    $('#required-data').text("");
 });
 
 $('#delete_single_modal').on('show.bs.modal', function (event) {
@@ -233,7 +236,7 @@ function dateFormatter(value, row, index, field) {
 }
 
 function actionFormatter(value, row, index, field) {
-  return "<button id='response_email_id' class='btn btn-info' data-toggle='modal' data-target='#response_email_modal' data-btn ='2' data-id='"+row.id+"'><i class='fa fa-external-link' style='color:white;'></i></button>"
+  return "<button id='response_email_id' class='btn btn-info' data-toggle='modal' data-target='#response_email_modal' data-btn ='2' data-email='"+row.email+"'><i class='fa fa-external-link' style='color:white;'></i></button>"
   +" <button id='unread_email_id' class='btn btn-primary' onclick='unread_email_id("+row.id+")'><i class='fa fa-envelope-o'></i></button>"
   +" <button id='read_email_id' class='btn btn-success' onclick='read_email_id("+row.id+")'><i class='fa fa-envelope-open-o'></i></button>"
   +" <button id='delete_email_id' class='btn btn-danger' data-toggle='modal' data-target='#delete_single_modal' data-id='"+row.id+"'><i class='fa fa-remove'></i></button>";
@@ -246,7 +249,8 @@ $table.on('check.bs.table uncheck.bs.table ' +
     $read.prop('disabled', !$table.bootstrapTable('getSelections').length);
     $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
     selections = getIdSelections();
-    if(selections.length !=0) {
+    email_selections = getEmailSelections();
+    if(selections.length != 0) {
     if(selections.length > 1) $response.prop('disabled', "disabled");
     else $response.prop('disabled', "");
     }
@@ -256,10 +260,44 @@ function getIdSelections() {
   return $.map($table.bootstrapTable('getSelections'), ({id}) => id);
 }
 
+function getEmailSelections() {
+  return $.map($table.bootstrapTable('getSelections'), ({email}) => email);
+}
+
 $( document ).ready(function() {
   $('#table').on('post-body.bs.table', function (data) {
     $('#table').bootstrapTable('uncheckAll');
   });
+});
+
+$("#response_email_btn").click(function() {
+  var data = {}
+  var email;
+  var subject;
+  var message;
+  email = $('#email_to').val();
+  subject = $('#subject').val();
+  message = $('#message').val();
+  if(email != "" && subject != "" && message != "") {
+    data['email'] = email;
+    data['subject'] = subject;
+    data['message'] = message;
+    $.ajax({
+      url:'{{ path("send_email") }}',
+      type: "POST",
+      data: data,
+      success: function (data) {
+        $('#response_email_modal').modal('hide');
+        $('#success_send_modal').modal('show');
+      },
+      error : function(xhr, status, errorMessage) {
+        alert("Algo ha salido mal: "+errorMessage);
+      }
+    });
+  }
+  else {
+    $('#required-data').text("Introduzca los datos requeridos");
+  }
 });
 
 $("#unread_email").click(function() {

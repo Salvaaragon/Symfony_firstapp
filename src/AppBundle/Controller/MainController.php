@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Form\ContactType;
 use AppBundle\Entity\Contact;
 use AppBundle\Entity\Developer;
@@ -95,17 +96,7 @@ class MainController extends Controller
     }
 
     public function inboxAction() {
-        $user_repository = $this->getDoctrine()->getRepository(User::class);
-        $users = $user_repository->findBy(array('isactive' => 1));
-
-        foreach($users as $u) {
-            $user_emails[] = array('email' => $u->getEmail());
-        }
-        
-        if(isset($user_emails)) 
-            return $this->render('@App/inbox.html.twig', array('user_emails' => $user_emails));
-        else
-           return $this->render('@App/inbox.html.twig');
+        return $this->render('@App/inbox.html.twig');
     }
 
     public function getJsonEmailsAction() {
@@ -214,26 +205,20 @@ class MainController extends Controller
         return $this->render('@App/inbox.html.twig');
     }
 
-    public function getEmailIdAction(Request $request = null) {
-        $id_email = $request->request->get('id');
-        $email_repository = $this->getDoctrine()->getRepository(Contact::class);
-        $email = $email_repository->find($id_email);
+    public function sendEmailAction(Request $request = null, \Swift_Mailer $mailer) {
 
-        $data[] = array('email' => $email->getEmail());
-
-        return new JsonResponse($data);
-    }
-
-    public function sendEmailAction(\Swift_Mailer $mailer){
-        $message = (new \Swift_Message('Hello Email'))
-        ->setSubject('Mensaje de la web')
-        ->setFrom('symfonypruebas18@gmail.com')
-        ->setTo('salvaaragon94@gmail.com')
-        ->setBody('Me llamo Eusebio');
+        $email = $request->request->get('email');
+        $subject = $request->request->get('subject');
+        $message = $request->request->get('message');
+        $message = (new \Swift_Message())
+        ->setSubject('[Young Developers Web] '.$subject)
+        ->setFrom(['youngdevelopers.web@gmail.com' => 'Grupo Young Developers'])
+        ->setTo($email)
+        ->setBody($message);
 
         $mailer->send($message);
 
-        return new JsonResponse();
+        return new Response();
     }
 
 }
