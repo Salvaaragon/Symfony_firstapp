@@ -240,23 +240,75 @@
         data.append('image', $('#new_dev_image')[0].files[0]);
         if (type_modal == 'edit') data.append('id', dev_id);
 
-        $.ajax({
-            method: 'POST',
-            url: "{{ path('save_developer') }}", 
-            data: data,
-            processData: false,
-            contentType: false,
-            success: function(result){
-                $('#image_dev').hide();
-                $('#new_developer_modal').modal('hide')
-                $('#table').bootstrapTable('refresh');
-                
-            },
-            error: function(xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-                alert(thrownError);
-            }
-        });
+        if (check_form_developer()) {
+            $.ajax({
+              method: 'POST',
+              url: "{{ path('save_developer') }}", 
+              data: data,
+              processData: false,
+              contentType: false,
+              success: function(result){
+                  $('#image_dev').hide();
+                  $('#new_developer_modal').modal('hide')
+                  $('#table').bootstrapTable('refresh');
+                  
+              },
+              error: function(xhr, ajaxOptions, thrownError) {
+                  alert(xhr.status);
+                  alert(thrownError);
+              }
+          });
+        }
+    }
+
+    function check_form_developer() {
+      var v_name = false; v_name = validate_name();
+      var v_pinfo = false; v_pinfo = validate_pinformation();
+      var v_image = false; v_image = validate_image();
+
+      return v_name && v_pinfo && v_image;
+    }
+
+    function validate_name() {
+      var validate = false;
+      
+      if ($('#new_dev_name').val() == "") {
+        $('#new_dev_name').addClass("validate_class");
+        validate = false;
+      }else {
+        $('#new_dev_name').removeClass("validate_class");
+        validate = true;
+      }
+
+      return validate;
+    }
+
+    function validate_pinformation() {
+      var validate = false;
+      
+      if ($('#new_dev_pinfo').val() == "") {
+        $('#new_dev_pinfo').addClass("validate_class");
+        validate = false;
+      }else {
+        $('#new_dev_pinfo').removeClass("validate_class");
+        validate = true;
+      }
+
+      return validate;
+    }
+
+    function validate_image() {
+      var validate = false;
+      
+      if ($('#new_dev_image')[0].files[0] == null) {
+        $('#new_dev_image').addClass("validate_class");
+        validate = false;
+      }else {
+        $('#new_dev_image').removeClass("validate_class");
+        validate = true;
+      }
+
+      return validate;
     }
 
     function delete_developer() {

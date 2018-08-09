@@ -37,3 +37,13 @@
     margin-left: 55px;
     margin-bottom: 15px;
 }
+
+.validate_class {
+    border: 1px solid #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem #dc354563 !important;
+}
+
+.validate_class:focus {
+    border: 1px solid #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem #dc354563 !important;
+}
