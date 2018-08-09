@@ -10,7 +10,7 @@
   <button id="edit_developer" class="btn btn-primary dev_buttons" onclick="edit_developer_modal();">
     <i class="fa fa-envelope-o"></i> Editar
   </button>
-  <button id="delete_developer" class="btn btn-danger dev_buttons" onclick="delete_developer();">
+  <button id="delete_developer" class="btn btn-danger dev_buttons" data-toggle="modal" data-target="#delete_single_modal">
     <i class="fa fa-remove"></i> Eliminar
   </button>
 </div>
@@ -39,11 +39,11 @@
     </table>
   </div>
   
-  <!-- Modal -->
+  <!-- Modal New/Edit -->
   <div class="modal fade" id="new_developer_modal" tabindex="-1" role="dialog" aria-labelledby="new_developer_modalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
+      <div class="modal-content my_modal_content">
+        <div class="modal-header my_modal_header">
           <h5 class="modal-title" id="new_developer_modalLabel">Nuevo desarrollador</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -83,17 +83,40 @@
             
             <label for="new_dev_image" class="col-sm-2 col-form-label">Imagen: </label>
             <div class="col-sm-9 form_modal_space">
+              <label id="current_image" style="margin-left: 15px;"></label>
               <input type="file" name="pic" class="mx-sm-3" name="devs_image" id="new_dev_image" accept="image/*">
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="close_dev_moda();">Cerrar</button>
-          <button type="button" class="btn btn-primary" onclick="save_developer();">Guardar</button>
+        <div class="modal-footer my_modal_footer">
+          <button type="button" class="btn btn-secondary" onclick="save_developer();">Guardar</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="close_dev_moda();">Cerrar</button>
         </div>
       </div>
     </div>
   </div>
+
+<!-- Modal message to delete -->
+<div class="modal fade del_email" id="delete_single_modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmación de eliminación</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-text">¿Seguro que desea eliminar el mensaje seleccionado?</p>
+        <div class="modal-button-bar">
+          <button type="button" id="delete_email_btn" class="btn btn-secondary" onclick="delete_developer();">Confirmar</button>
+          <button type="button" onclick="$('#delete_single_modal').modal('hide')" class="btn btn-primary">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 
 {% block javascripts %}
@@ -112,6 +135,8 @@
     var dev_linkedin;
     var dev_twitter;
     var dev_github;
+    var dev_image;
+    var url_base = "{{ asset('uploads/media/') }}";
     
     function linksFormatter(value, row, index, field) {
         linkedin  = linkedin_link = row.linkedin;
@@ -142,7 +167,6 @@
                 $edit.prop('disabled', 'disabled');
             } else {
                 $edit.prop('disabled', '');
-                save_selected_row(selections);
             }
         }
     }
@@ -154,11 +178,47 @@
         // save your data, here just save the current page
         selections = getIdSelections();
         check_enable_button_edit(selections.length);
+        dev_id = getIdSelections();
+        dev_name = getNameSelections();
+        dev_surname = getSurnameSelections();
+        dev_pinformation = getPInformationSelections();
+        dev_linkedin = getLinkedinSelections();
+        dev_twitter = getTwitterSelections();
+        dev_github = getGithubSelections();
+        dev_image = getImageSelections();
         // push or splice the selections if you want to save all data selections
       });
     
     function getIdSelections() {
       return $.map($table.bootstrapTable('getSelections'), ({id}) => id);
+    }
+
+    function getNameSelections() {
+      return $.map($table.bootstrapTable('getSelections'), ({name}) => name);
+    }
+
+    function getSurnameSelections() {
+      return $.map($table.bootstrapTable('getSelections'), ({surname}) => surname);
+    }
+
+    function getPInformationSelections() {
+      return $.map($table.bootstrapTable('getSelections'), ({personalInformation}) => personalInformation);
+    }
+
+    function getGithubSelections() {
+      return $.map($table.bootstrapTable('getSelections'), ({github}) => github);
+    }
+
+    function getLinkedinSelections() {
+      return $.map($table.bootstrapTable('getSelections'), ({linkedin}) => linkedin);
+    }
+
+    function getTwitterSelections() {
+      return $.map($table.bootstrapTable('getSelections'), ({twitter}) => twitter);
+    }
+
+    function getImageSelections() {
+      return $.map($table.bootstrapTable('getSelections'), ({image}) => image);
     }
     
     $( document ).ready(function() {
@@ -170,22 +230,27 @@
 
     function save_developer() {
         // first take a dato to inputs
-        var data = {}
-        data['name'] = $('#new_dev_name').val();
-        data['surname'] = $('#new_dev_surname').val();
-        data['pinformation'] = $('#new_dev_pinfo').val();
-        data['linkedin'] = $('#new_dev_linkedin').val();
-        data['twitter'] = $('#new_dev_twitter').val();
-        data['github'] = $('#new_dev_github').val();
-        if (type_modal == 'edit') data['id'] = dev_id;
+        var data = new FormData();
+        data.append('name', $('#new_dev_name').val());
+        data.append('surname', $('#new_dev_surname').val());
+        data.append('pinformation', $('#new_dev_pinfo').val());
+        data.append('linkedin', $('#new_dev_linkedin').val());
+        data.append('twitter', $('#new_dev_twitter').val());
+        data.append('github', $('#new_dev_github').val());
+        data.append('image', $('#new_dev_image')[0].files[0]);
+        if (type_modal == 'edit') data.append('id', dev_id);
 
         $.ajax({
             method: 'POST',
             url: "{{ path('save_developer') }}", 
             data: data,
+            processData: false,
+            contentType: false,
             success: function(result){
+                $('#image_dev').hide();
                 $('#new_developer_modal').modal('hide')
                 $('#table').bootstrapTable('refresh');
+                
             },
             error: function(xhr, ajaxOptions, thrownError) {
                 alert(xhr.status);
@@ -203,6 +268,7 @@
         url: "{{ path('delete_developer') }}", 
         data: data,
         success: function(result){
+            $('#delete_single_modal').modal('hide');
             $('#table').bootstrapTable('refresh');
         },
         error: function(xhr, ajaxOptions, thrownError) {
@@ -211,24 +277,7 @@
         }
         });
     }
-
-    function edit_developer(result) {
-        dev = result[0];
-        $('#new_dev_name').val(dev.name);
-        $('#new_dev_surname').val(dev.surname);
-        $('#new_dev_pinfo').val(dev.personalInformation);
-        $('#new_dev_linkedin').val(dev.linkedin);
-        $('#new_dev_twitter').val(dev.twitter);
-        $('#new_dev_github').val(dev.github);
-        dev_id = dev.id;
-        dev_name = dev.name;
-        dev_surname = dev.surname;
-        dev_pinformation = dev.personalInformation;
-        dev_linkedin = dev.linkedin;
-        dev_twitter = dev.twitter;
-        dev_github = dev.github;
-    }
-
+    
     function edit_developer_modal() {
 
       $('#new_dev_name').val(dev_name);
@@ -237,28 +286,14 @@
       $('#new_dev_linkedin').val(dev_linkedin);
       $('#new_dev_twitter').val(dev_twitter);
       $('#new_dev_github').val(dev_github);
+      $('#current_image').show();
+      $('#current_image').html('Actual imagen: ' + dev_image);
+      url_image = 
+
       type_modal = 'edit';
       $('#new_developer_modal').modal('toggle');
     }
     
-    function save_selected_row(selections_id) {
-      var data = {}
-      data['id'] = selections_id;
-      
-      $.ajax({
-        method: 'POST',
-        url: "{{ path('get_developer') }}", 
-        data: data,
-        success: function(result){
-          edit_developer(result);
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-            alert(xhr.status);
-            alert(thrownError);
-        }
-        });
-    }
-
     function close_dev_moda() {
         $('#new_dev_name').val("");
         $('#new_dev_surname').val("");
@@ -266,7 +301,10 @@
         $('#new_dev_linkedin').val("");
         $('#new_dev_twitter').val("");
         $('#new_dev_github').val("");
-        
+        $('#new_dev_image').val("");
+        $('#current_image').html("");
+        $('#image_dev').hide();
+
         $('#new_developer_modal').modal('hide');
     }
 
@@ -277,9 +315,19 @@
         $('#new_dev_linkedin').val("");
         $('#new_dev_twitter').val("");
         $('#new_dev_github').val("");
+        $('#new_dev_image').val("");
+        $('#current_image').hide();
+
         type_modal = 'new';
         $('#new_developer_modal').modal('toggle');
     }
+    
+    $( "#current_image" ).mouseenter(function() {
+      if ($('#image_dev').is(":visible") == false) {
+        $( this ).after("<img id='image_dev' src='"+ url_base + dev_image +"'>");
+        $('#image_dev').show();
+      }
+    }); 
 
     </script>
 {% endblock %}

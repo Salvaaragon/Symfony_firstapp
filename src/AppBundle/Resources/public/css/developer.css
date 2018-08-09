@@ -17,3 +17,23 @@
     min-width: 100px;
     width: 150px;
 }
+
+.my_modal_content {
+    max-height: 525px;
+    overflow-y: auto;
+}
+
+.my_modal_header {
+    padding-bottom: 45px;
+}
+
+.my_modal_footer {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+#image_dev{
+    width: 200px;
+    margin-left: 55px;
+    margin-bottom: 15px;
+}

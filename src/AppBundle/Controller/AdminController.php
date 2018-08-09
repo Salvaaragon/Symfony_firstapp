@@ -32,7 +32,8 @@ class AdminController extends Controller
                 'personalInformation' => $developer->getPersonalInformation(),
                 'linkedin' => $developer->getLinkedin(),
                 'twitter' => $developer->getTwitter(),
-                'github' => $developer->getGithub()
+                'github' => $developer->getGithub(),
+                'image' => $developer->getImage()
                 );
         }
         return new JsonResponse($developers);
@@ -49,20 +50,30 @@ class AdminController extends Controller
         $linkedin = $request->request->get('linkedin');
         $twitter = $request->request->get('twitter');
         $github = $request->request->get('github');
+        $image = $request->files->get('image');
+
         $id = $request->request->get('id');
         
         if ($id != null) {
             
             $dev_repository = $entityManager->getRepository(Developer::class);
-            $developer = $dev_repository->find($id);
+            $developer = $dev_repository->find($id[0]);
             $developer->setName($name);
             $developer->setSurname($surname);
             $developer->setPersonalInformation($pinfo);
             $developer->setLinkedin($linkedin);
             $developer->setTwitter($twitter);
             $developer->setGithub($github);
-            $developer->setImage("default_bio.png");
-            
+            if ($image != null) {
+
+                $fileName = uniqid().'.'.$image->guessExtension();
+                $image->move(
+                    $this->getParameter('media_directory'),
+                    $fileName
+                );
+                $developer->setImage($fileName);
+            }
+
             $entityManager->flush();
         }else {
             $developer->setName($name);
@@ -71,7 +82,13 @@ class AdminController extends Controller
             $developer->setLinkedin($linkedin);
             $developer->setTwitter($twitter);
             $developer->setGithub($github);
-            $developer->setImage("default_bio.png");
+
+            $fileName = uniqid().'.'.$image->guessExtension();
+            $image->move(
+                $this->getParameter('media_directory'),
+                $fileName
+            );
+            $developer->setImage($fileName);
 
             $entityManager->persist($developer);
             $entityManager->flush();
@@ -95,25 +112,5 @@ class AdminController extends Controller
             }  
         }
         return new Response();
-    }
-
-    public function getDeveloperAction(Request $request = null) {
-
-        $id = $request->request->get('id');
-        $entityManager = $this->getDoctrine()->getManager();
-        $developer_repository = $entityManager->getRepository(Developer::class);
-        $developer = $developer_repository->find($id[0]);
-
-        $developer_json[] = array(
-            'id' => $developer->getId(),
-            'name' => $developer->getName(),
-            'surname' => $developer->getSurname(),
-            'personalInformation' => $developer->getPersonalInformation(),
-            'linkedin' => $developer->getLinkedin(),
-            'twitter' => $developer->getTwitter(),
-            'github' => $developer->getGithub()
-            );
-        
-        return new JsonResponse($developer_json);
     }
 }
